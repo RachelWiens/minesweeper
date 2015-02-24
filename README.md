@@ -1,2 +1,3 @@
 # minesweeper
-Minesweeper written in java.
+Author: Rachel Wiens
+Description: Minesweeper written in java.
