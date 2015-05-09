@@ -10,6 +10,7 @@ public class Minesweeper {
 	private Board board;
 	private boolean[][] minefield;
 	private boolean firstMove;		// true if the first move in the game has yet to be made.
+	private int numFlags;
 	
 	public Minesweeper(){
 		this(10, 10, 20);
@@ -19,6 +20,7 @@ public class Minesweeper {
 		boardLength = length;
 		boardHeight = height;
 		numMines = mines;
+		numFlags = 0;
 		board = new Board(boardHeight, boardLength, numMines);
 		minefield = new boolean[boardHeight][boardLength];			// array of mines. Element is true if it is a mine, false otherwise
 		firstMove = true;
@@ -29,6 +31,7 @@ public class Minesweeper {
 	 */
 	public void newGame(){
 		board.clearBoard();
+		numFlags = 0;
 		firstMove = true;
 	}
 	
@@ -105,8 +108,10 @@ public class Minesweeper {
 		Tile tile = board.getTile(i, j);
 		if( tile == Tile.UNKNOWN){
 			board.setTile(i, j, Tile.FLAGGED);
+			numFlags++;
 		} else if (tile == Tile.FLAGGED){
 			board.setTile(i, j, Tile.UNKNOWN);
+			numFlags--;
 		}
 	}
 	
@@ -122,6 +127,14 @@ public class Minesweeper {
 			}
 		}
 		return true;
+	}
+	
+	/**
+	 * Return the estimated number of mines left unflagged.
+	 * Returns numMines - numFlags. Note that this will not reflect the actual number of unflagged mines if the user has incorrectly flagged a tile.
+	 */
+	public int getMinesLeft() {
+		return numMines - numFlags;
 	}
 	
 	/**
